@@ -1,0 +1,416 @@
+:root {
+    --grey: #c9cccf;
+    --grey1: #e6e6e6;
+    --grey2: #5b5b5c;
+    --grey4: #b3b4b6;
+    --col2: #2a67c8;
+    --col3: #205498;
+    --blue: #1c87e4;
+    --blue1: #1c87e483;
+    --red: #e32a33;
+    --red1: #ae0009;
+    --green: #02c75e;
+    --green1: #009445;
+    --orange: #fe7f00;
+    --purple: #591384;
+}
+
+* {
+    box-sizing: border-box;
+
+}
+body {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    background: var(--grey);
+    padding: 0;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+button {
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+main, aside {
+    background: #fff;
+    
+    margin: 15px;
+    border-radius: 6px;
+
+    box-shadow: -1px 2px 6px rgba(0,0,0,0.15)
+}
+.search-panel, #items-container > *,  aside h2, aside ul {
+    width: 100%;
+    padding: 20px;
+    margin: 0;
+    
+}
+.search-panel, #items-container > *:not(:last-child),  aside h2,  aside > *:not(:last-child)  {
+    border-bottom: 1px var(--grey) solid;
+}
+main {
+    width: 100%;
+}
+main .search-panel {
+    display: flex;
+}
+main .search-panel input {
+    padding: 12px;
+    font-size: 1rem;
+    width: 100%;
+    border-radius: 3px 0 0 3px;
+    border: 1px var(--grey) solid;
+}
+main .search-panel button {
+    
+    border-radius: 0 3px 3px 0;
+    width:180px;
+    text-align: center;
+    border: none;
+    background: var(--col2);
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    
+}
+main .search-panel button:before {
+    content: '';
+    position: absolute;
+    bottom:0;
+    left:0;
+    height: 10%;
+    width:100%;
+    border-radius: 0 0 3px 0;
+    border-bottom: 5px solid var(--col3);
+    
+}
+main .search-panel button:hover {
+    background: var(--col3);
+}
+main #items-container .item-panel {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding: 15px 20px;
+}
+
+main .item-panel input, main .item-panel p {
+    padding: 6px 10px;
+    margin: 0;
+    font-size: 1rem;
+    border-radius: 1px;
+    border: none;
+    width: 25%;
+    transition: all 0.3s;
+}
+main .item-panel input:focus {
+    outline: var(--blue) 1px solid;
+    box-shadow: var(--blue1) 0 0 6px;
+    font-size: 0.8rem;
+}
+
+main .item-panel div {
+    display: flex;
+    align-items: center;
+}
+main .item-panel .amount {
+    width:35px;
+    height:35px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--grey2);
+    background: var(--grey1);
+    border-radius: 4px;
+    border: none;  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 5px;
+}
+main .item-panel .less-btn, main .item-panel .more-btn {
+    width:40px;
+    height: 40px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #fff;
+    background: var(--grey1);
+    border-radius: 50%;
+    border: none; 
+}
+main .item-panel .less-btn {
+    background: var(--red);
+    border-bottom:  3px solid var(--red1);
+}
+main .item-panel .more-btn {
+    background: var(--green);
+    border-bottom: 3px solid var(--green1);
+}
+
+main .item-panel .more-btn:not([disabled]):hover {
+    background: var(--green1);
+}
+main .item-panel .submission {
+    width: 160px;
+    justify-content: flex-end;
+}
+main .item-panel .buy-btn {
+    padding: 10px 25px;
+    height: 40px;
+    border-radius: 4px;
+    text-align: center;
+    border: 1px solid var(--grey4);
+    color: var(--grey2);
+    font-weight: bold;
+
+}
+main .item-panel .buy-btn:before{
+    content: '';
+    position: absolute;
+    bottom:0;
+    left:0;
+    height: 10%;
+    width:100%;
+    border-radius: 4px;
+    border-bottom: 3.5px solid var(--grey);
+    
+}
+main .item-panel .buy-btn:hover {
+    background: var(--grey);
+}
+main .item-panel .delete-btn {
+    margin-left: 5px;
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    text-align: center;
+    border: none;
+    background: var(--red);
+    color: #fff;
+    font-weight: bold;
+    
+    
+}
+main .item-panel .delete-btn:before {
+    content: '';
+    position: absolute;
+    bottom:0;
+    left:0;
+    height: 10%;
+    width:100%;
+    border-radius: 4px;
+    border-bottom: 4px solid var(--red1);
+    
+}
+main .item-panel .delete-btn:hover, main .item-panel .less-btn:not([disabled]):hover {
+    background: var(--red1);
+}
+aside {
+    width: 50%;
+}
+aside h1 {
+    font-size: 1.5rem;
+}
+aside ul {
+    margin: 0;
+}
+aside li {
+    display: inline-block;
+    padding: 6px 10px;
+    background: var(--grey1);
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: var(--grey2);
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 2px;
+}
+aside li .amount {
+    width: 25px;
+    height: 25px;
+    margin-left:3px;
+    font-weight: 500;
+    color: #fff;
+    background: var(--orange);
+    border-radius: 50%;
+    border: none; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 0.75rem;
+}
+.hidden {
+    display: none;
+}
+#bought li > *, .crossed {
+    text-decoration: line-through;
+}
+button[disabled] {
+    border-bottom: none!important;
+    opacity: 0.5;
+    cursor: not-allowed !important; 
+    
+}
+
+button:after{
+    content: attr(data-tooltip) ;
+    padding: 6px;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    min-width:100px;
+    transform: translate(-50%, 5px) scale(0);
+    border-radius: 5px;
+    background-color: var(--purple);
+    color: white;
+    font-size: 0.8rem;
+    font-weight: normal;
+    opacity: 0;
+    transform-origin: bottom;
+    transition: all 0.4s ease-in-out;
+}
+button:not([disabled]):hover {
+    box-shadow: 0 3px 5px rgba(0,0,0,0.5);
+}
+button:not([disabled]):hover::after {
+    box-shadow: 0 3px 5px rgba(0,0,0,0.4);
+    display: block;
+    opacity: 1;
+    
+    transform: translate(-50%, -4px) scale(1);
+  }
+
+
+.badge {
+    padding: 5px 25px;
+    width: 180px;
+    border-radius: 10px 10px 0 0;
+    background-color: var(--purple);
+    border: 2px solid var(--purple);
+    color: white;
+    position: fixed;
+    bottom:0px;
+    left: 20px;
+    transform: translateY(55%);
+    transition: all 0.5s ease;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+}
+.badge h2 {
+    text-align: center;
+}
+.badge p {
+    font-size: 0.9rem;
+}
+.badge p .author-name {
+    font-size: 1.2rem;
+}
+.badge:hover {
+    background-color: var(--col2);
+    border: 2px solid var(--col2);
+    transform: translateY(0%);
+} 
+
+
+@media screen and (max-width: 768px) {
+    * {
+        font-size: 0.9rem;
+        
+    }
+    main, aside {
+        margin: 15px 10px;
+    } 
+    aside {
+        width: 40%;
+    }
+    .search-panel, #items-container > *,  aside h2, aside ul {
+        padding: 15px;
+        
+    }
+    main #items-container .item-panel {
+        padding: 15px;
+    }
+    main .item-panel input, main .item-panel p {
+        padding: 6px;
+    }
+
+    main .item-panel .submission {
+        width: 130px;
+    }
+    main .item-panel .delete-btn,  main .item-panel .less-btn, main .item-panel .more-btn{
+        width:32px;
+        height: 32px;
+    }
+    main .item-panel .buy-btn {
+        padding: 6px 16px;
+        height: 32px;
+    }
+    main .item-panel .amount {
+        height: 32px;
+        width: 32px;
+        font-size: 0.8rem;
+    }
+    .badge {
+        transform: translateY(56%);
+        width: 160px;
+    }
+    .badge h2 {
+        font-size: 1.2rem;
+    }
+    .badge p {
+        font-size: 0.8em;
+    }
+    
+}
+@media screen and (max-width: 500px) {
+    body {
+        flex-direction: column;
+        align-items: center;
+
+    }
+    main, aside {
+        width: 92%;
+        margin: 10px 0;
+    }
+    
+    
+}
+@media screen and (max-width: 375px) {
+   
+    main .item-panel {
+        flex-direction: column;
+        align-items: center;
+        
+    }
+    main .item-panel > * {
+        margin: 5px 0;
+    }
+    main .item-panel input, main .item-panel p {
+        height: 30px;
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+    }
+    main .item-panel .submission {
+        width: 100%;
+        justify-content: center;
+    }
+    
+}
+@media print {
+    .badge {
+        background: white;
+        color: var(--grey2);
+        border-color: var(--purple);
+        transform: translateY(0%);
+    }
+    .badge h2 {
+        display: none;
+    }
+}
