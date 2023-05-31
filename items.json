@@ -1,5 +1,0 @@
-[
-  { "id": 0, "value": "Помідори", "amount": 2, "bought": true},
-  { "id": 1, "value": "Печиво", "amount": 2, "bought": false },
-  { "id": 2, "value": "Сир", "amount": 1, "bought": false }
-]
