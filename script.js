@@ -5,14 +5,13 @@ let items = [
 ];
 function updateLocalStorage() {
 	localStorage.buyListApp = JSON.stringify(items);
-	console.log("local storage updated with current items object");
 
 	//console.log(items);
 }
 function fetchFromLocalStorage() {
 	if (localStorage.getItem("buyListApp") != null) {
 		items = JSON.parse(localStorage.getItem("buyListApp"));
-		console.log("Parsed from localStorage", items);
+		//console.log("Parsed from localStorage", items);
 	}
 }
 function clearStorage() {
@@ -51,11 +50,11 @@ function renderHTML() {
 
 			input.addEventListener("input", (e) => {
 				item.name = input.value;
-				console.log("input focused. New name: ", input.value);
+				//console.log("input focused. New name: ", input.value);
 			});
 
 			input.addEventListener("blur", (e) => {
-				console.log("input submitted");
+				//console.log("input submitted");
                 updateLocalStorage();
                 label.innerText = input.value;
 
@@ -74,7 +73,7 @@ function renderHTML() {
 			});
 
 			label.addEventListener("click", (e) => {
-				console.log("click");
+				//console.log("click");
 				label.classList.add("hidden");
 				input.classList.remove("hidden");
 				input.focus();
@@ -180,13 +179,13 @@ function renderHTML() {
 
 function addItemToObject(name) {
 	let names = items.map((obj) => obj.name);
-	console.log(names);
+	//console.log(names);
 	if (names.indexOf(name) == -1) {
 		items.push({ name: name, amount: 1, bought: false });
 	} else {
 		alert("This item is already in your list!");
 	}
-	console.log(items);
+	//console.log(items);
 	updateLocalStorage();
 	renderHTML();
 }
