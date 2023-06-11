@@ -16,6 +16,7 @@ function fetchFromLocalStorage() {
 }
 function clearStorage() {
 	localStorage.removeItem("buyListApp");
+	location.reload();
 }
 
 function renderHTML() {
@@ -48,27 +49,46 @@ function renderHTML() {
             input.name = item.name;
 			itemSection.appendChild(input);
 
+			let renamed = true; 
+
 			input.addEventListener("input", (e) => {
-				item.name = input.value;
-				//console.log("input focused. New name: ", input.value);
+				if (itemIndexByName(input.value)==-1 || itemIndexByName(input.value)==items.indexOf(item)){
+					item.name = input.value;
+					//console.log("input focused. New name: ", input.value);
+					renamed = true;
+				} else {
+					renamed = false;
+				}
 			});
 
 			input.addEventListener("blur", (e) => {
 				//console.log("input submitted");
-                updateLocalStorage();
-                label.innerText = input.value;
+				//if (!itemExists(input.value)){
+				if (renamed){
+					updateLocalStorage();
+					label.innerText = input.value;
+					notBoughtList.innerHTML = "";
+					boughtList.innerHTML = "";
+					items.forEach((item) => {
+						renderAsideListItem(item);
+					});
+				} else {
+					alert("Couldn't apply the new name. It already exists")
+					input.value = label.innerText;
+					item.name = label.innerText;
+					renamed = true;
+					//updateLocalStorage();
+			
+				}
+				
+				//console.log("items input.addEventListener blur:", items);	
+				
+                setTimeout(() => {
+			
+					label.classList.remove("hidden");
+					input.classList.add("hidden");
 
-                notBoughtList.innerHTML = "";
-	                boughtList.innerHTML = "";
-                items.forEach((item) => {
-                    renderAsideListItem(item);
-                });
-				setTimeout(() => {
-		
-                    label.classList.remove("hidden");
-				    input.classList.add("hidden");
-
-                    
+					
 				}, 300);
 			});
 
@@ -176,16 +196,18 @@ function renderHTML() {
 		else notBoughtList.appendChild(li);
 	}
 }
+function itemIndexByName(name) {
+	let names = items.map((obj) => obj.name.toLowerCase());
 
+	return names.indexOf(name.toLowerCase().trim());
+}
 function addItemToObject(name) {
-	let names = items.map((obj) => obj.name);
-	//console.log(names);
-	if (names.indexOf(name) == -1) {
+	
+	if (itemIndexByName(name)==-1) {
 		items.push({ name: name, amount: 1, bought: false });
 	} else {
-		alert("This item is already in your list!");
+		alert("Item with this name is already on your list!");
 	}
-	//console.log(items);
 	updateLocalStorage();
 	renderHTML();
 }
