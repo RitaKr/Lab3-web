@@ -52,7 +52,7 @@ function renderHTML() {
 			let renamed = true; 
 
 			input.addEventListener("input", (e) => {
-				if (itemIndexByName(input.value)==-1 || itemIndexByName(input.value)==items.indexOf(item)){
+				if ((itemIndexByName(input.value)==-1 || itemIndexByName(input.value)==items.indexOf(item)) && input.value.trim().length>0){
 					item.name = input.value;
 					//console.log("input focused. New name: ", input.value);
 					renamed = true;
@@ -73,7 +73,7 @@ function renderHTML() {
 						renderAsideListItem(item);
 					});
 				} else {
-					alert("Couldn't apply the new name. It already exists")
+					alert("Couldn't apply the new name")
 					input.value = label.innerText;
 					item.name = label.innerText;
 					renamed = true;
