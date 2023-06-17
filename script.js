@@ -36,7 +36,6 @@ function renderAside() {
 	const notBoughtList = document.getElementById("not-bought");
 	const boughtList = document.getElementById("bought");
 
-
 	notBoughtList.innerHTML = "";
 	boughtList.innerHTML = "";
 
@@ -49,7 +48,6 @@ function renderAside() {
 
 
 function renderItemPanel(item) {
-	
 	const itemSection = document.createElement("section");
 	itemSection.classList.add("item-panel");
 
@@ -170,14 +168,20 @@ function renderItemPanel(item) {
 		e.preventDefault();
 		item.amount++;
 		updateLocalStorage();
-		renderHTML();
+		amountSpan.textContent = item.amount;
+		if (item.amount < 2) lessButton.disabled = true;
+		else lessButton.disabled = false;
+		renderAside();
 	});
 
 	lessButton.addEventListener("click", (e) => {
 		e.preventDefault();
 		if (item.amount > 1) item.amount--;
 		updateLocalStorage();
-		renderHTML();
+		amountSpan.textContent = item.amount;
+		if (item.amount < 2) lessButton.disabled = true;
+		else lessButton.disabled = false;
+		renderAside();
 	});
 
 	buyButton.addEventListener("click", (e) => {
@@ -232,6 +236,7 @@ function addItemAndRerender(input) {
 	let inputValue = input.value.trim();
 
 	if (inputValue.length !== 0) addItemToObject(inputValue);
+	else alert("Enter something!");
 	input.value = "";
 	input.focus();
 }
