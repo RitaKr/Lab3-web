@@ -20,185 +20,199 @@ function clearStorage() {
 }
 
 function renderHTML() {
+	renderMain();
+	renderAside();
+}
+function renderMain() {
 	const itemsContainer = document.getElementById("items-container");
+	itemsContainer.innerHTML = "";
+
+	items.forEach((item) => {
+		itemsContainer.append(renderItemPanel(item));
+	});
+
+}
+function renderAside() {
 	const notBoughtList = document.getElementById("not-bought");
 	const boughtList = document.getElementById("bought");
 
-	itemsContainer.innerHTML = "";
+
 	notBoughtList.innerHTML = "";
 	boughtList.innerHTML = "";
 
 	items.forEach((item) => {
-		renderItemPanel(item);
-		renderAsideListItem(item);
+		if (item.bought) boughtList.append(renderAsideListItem(item));
+		else notBoughtList.append(renderAsideListItem(item));
 	});
 
-	function renderItemPanel(item) {
-		const itemSection = document.createElement("section");
-		itemSection.classList.add("item-panel");
-
-		let label = document.createElement("p");
-		label.innerText = item.name;
-		itemSection.appendChild(label);
-
-		if (!item.bought) {
-			let input = document.createElement("input");
-			input.classList.add("hidden");
-			input.type = "text";
-			input.value = item.name;
-            input.name = item.name;
-			itemSection.appendChild(input);
-
-			let renamed = true; 
-
-			input.addEventListener("input", (e) => {
-				if ((itemIndexByName(input.value)==-1 || itemIndexByName(input.value)==items.indexOf(item)) && input.value.trim().length>0){
-					item.name = input.value;
-					//console.log("input focused. New name: ", input.value);
-					renamed = true;
-				} else {
-					renamed = false;
-				}
-			});
-
-			input.addEventListener("blur", (e) => {
-				//console.log("input submitted");
-				//if (!itemExists(input.value)){
-				if (renamed){
-					updateLocalStorage();
-					label.innerText = input.value;
-					notBoughtList.innerHTML = "";
-					boughtList.innerHTML = "";
-					items.forEach((item) => {
-						renderAsideListItem(item);
-					});
-				} else {
-					alert("Couldn't apply the new name")
-					input.value = label.innerText;
-					item.name = label.innerText;
-					renamed = true;
-					//updateLocalStorage();
-			
-				}
-				
-				//console.log("items input.addEventListener blur:", items);	
-				
-                setTimeout(() => {
-			
-					label.classList.remove("hidden");
-					input.classList.add("hidden");
-
-					
-				}, 300);
-			});
-
-			label.addEventListener("click", (e) => {
-				//console.log("click");
-				label.classList.add("hidden");
-				input.classList.remove("hidden");
-				input.focus();
-			});
-		}
-
-		const amountContainer = document.createElement("div");
-
-		const lessButton = document.createElement("button");
-		lessButton.classList.add("less-btn");
-
-		lessButton.dataset.tooltip = "Зменшити кількість";
-		lessButton.textContent = "–";
-		if (item.amount < 2) lessButton.disabled = true;
-		amountContainer.appendChild(lessButton);
-
-		const amountSpan = document.createElement("span");
-		amountSpan.classList.add("amount");
-		amountSpan.textContent = item.amount;
-		amountContainer.appendChild(amountSpan);
-
-		const moreButton = document.createElement("button");
-		moreButton.classList.add("more-btn");
-		moreButton.dataset.tooltip = "Збільшити кількість";
-		moreButton.textContent = "+";
-		amountContainer.appendChild(moreButton);
-
-		itemSection.appendChild(amountContainer);
-
-		const submissionContainer = document.createElement("div");
-		submissionContainer.classList.add("submission");
-
-		const buyButton = document.createElement("button");
-		buyButton.type = "submit";
-		buyButton.classList.add("buy-btn");
-		buyButton.dataset.tooltip = "Змінити статус покупки";
-		buyButton.textContent = item.bought ? "Не куплено" : "Куплено";
-		submissionContainer.appendChild(buyButton);
-
-		const deleteButton = document.createElement("button");
-		deleteButton.classList.add("delete-btn");
-
-		deleteButton.dataset.tooltip = "Видалити товар";
-		deleteButton.textContent = "✖";
-		submissionContainer.appendChild(deleteButton);
-
-		itemSection.appendChild(submissionContainer);
-
-		if (item.bought) {
-			label.classList.add("crossed");
-			lessButton.classList.add("hidden");
-			moreButton.classList.add("hidden");
-			deleteButton.classList.add("hidden");
-		}
-
-		itemsContainer.appendChild(itemSection);
-
-		moreButton.addEventListener("click", (e) => {
-			e.preventDefault();
-			item.amount++;
-			updateLocalStorage();
-			renderHTML();
-		});
-
-		lessButton.addEventListener("click", (e) => {
-			e.preventDefault();
-			if (item.amount > 1) item.amount--;
-			updateLocalStorage();
-			renderHTML();
-		});
-
-		buyButton.addEventListener("click", (e) => {
-			e.preventDefault();
-			item.bought = !item.bought;
-			updateLocalStorage();
-			renderHTML();
-		});
-
-		deleteButton.addEventListener("click", (e) => {
-			e.preventDefault();
-			items.splice(items.indexOf(item), 1);
-			updateLocalStorage();
-			renderHTML();
-		});
-	}
-
-	function renderAsideListItem(item) {
-		const li = document.createElement("li");
-		const nameSpan = document.createElement("span");
-		nameSpan.classList.add("name");
-		nameSpan.innerText = item.name;
-		li.appendChild(nameSpan);
-
-		const amountSpan = document.createElement("span");
-		amountSpan.classList.add("amount");
-		amountSpan.innerText = item.amount;
-		li.appendChild(amountSpan);
-
-		if (item.bought) boughtList.appendChild(li);
-		else notBoughtList.appendChild(li);
-	}
 }
+function renderItemPanel(item) {
+	
+	const itemSection = document.createElement("section");
+	itemSection.classList.add("item-panel");
+
+	let label = document.createElement("p");
+	label.innerText = item.name;
+	itemSection.appendChild(label);
+
+	if (!item.bought) {
+		let input = document.createElement("input");
+		input.classList.add("hidden");
+		input.type = "text";
+		input.value = item.name;
+		input.name = item.name;
+		itemSection.appendChild(input);
+
+		let renamed = true; 
+
+		input.addEventListener("input", (e) => {
+			let inputVal = input.value.trim();
+
+			if ((itemIndexByName(inputVal)==-1 || itemIndexByName(inputVal)==items.indexOf(item)) && inputVal.length>0){
+				item.name = inputVal;
+				//console.log("input focused. New name: ", input.value);
+				renamed = true;
+			} else {
+				renamed = false;
+			}
+		});
+
+		input.addEventListener("blur", (e) => {
+			//console.log("input submitted");
+			//if (!itemExists(input.value)){
+			if (renamed){
+				updateLocalStorage();
+				label.innerText = item.name;
+				input.value = item.name;
+				renderAside();
+			} else {
+				alert("Couldn't apply the new name")
+				input.value = label.innerText;
+				item.name = label.innerText;
+				renamed = true;
+				//updateLocalStorage();
+		
+			}
+			
+			//console.log("items input.addEventListener blur:", items);	
+			
+			setTimeout(() => {
+		
+				label.classList.remove("hidden");
+				input.classList.add("hidden");
+
+				
+			}, 300);
+		});
+
+		label.addEventListener("click", (e) => {
+			//console.log("click");
+			label.classList.add("hidden");
+			input.classList.remove("hidden");
+			input.focus();
+		});
+	}
+
+	const amountContainer = document.createElement("div");
+
+	const lessButton = document.createElement("button");
+	lessButton.classList.add("less-btn");
+
+	lessButton.dataset.tooltip = "Зменшити кількість";
+	lessButton.textContent = "–";
+	if (item.amount < 2) lessButton.disabled = true;
+	amountContainer.appendChild(lessButton);
+
+	const amountSpan = document.createElement("span");
+	amountSpan.classList.add("amount");
+	amountSpan.textContent = item.amount;
+	amountContainer.appendChild(amountSpan);
+
+	const moreButton = document.createElement("button");
+	moreButton.classList.add("more-btn");
+	moreButton.dataset.tooltip = "Збільшити кількість";
+	moreButton.textContent = "+";
+	amountContainer.appendChild(moreButton);
+
+	itemSection.appendChild(amountContainer);
+
+	const submissionContainer = document.createElement("div");
+	submissionContainer.classList.add("submission");
+
+	const buyButton = document.createElement("button");
+	buyButton.type = "submit";
+	buyButton.classList.add("buy-btn");
+	buyButton.dataset.tooltip = "Змінити статус покупки";
+	buyButton.textContent = item.bought ? "Не куплено" : "Куплено";
+	submissionContainer.appendChild(buyButton);
+
+	const deleteButton = document.createElement("button");
+	deleteButton.classList.add("delete-btn");
+
+	deleteButton.dataset.tooltip = "Видалити товар";
+	deleteButton.textContent = "✖";
+	submissionContainer.appendChild(deleteButton);
+
+	itemSection.appendChild(submissionContainer);
+
+	if (item.bought) {
+		label.classList.add("crossed");
+		lessButton.classList.add("hidden");
+		moreButton.classList.add("hidden");
+		deleteButton.classList.add("hidden");
+	}
+
+	
+
+	moreButton.addEventListener("click", (e) => {
+		e.preventDefault();
+		item.amount++;
+		updateLocalStorage();
+		renderHTML();
+	});
+
+	lessButton.addEventListener("click", (e) => {
+		e.preventDefault();
+		if (item.amount > 1) item.amount--;
+		updateLocalStorage();
+		renderHTML();
+	});
+
+	buyButton.addEventListener("click", (e) => {
+		e.preventDefault();
+		item.bought = !item.bought;
+		updateLocalStorage();
+		renderHTML();
+	});
+
+	deleteButton.addEventListener("click", (e) => {
+		e.preventDefault();
+		items.splice(items.indexOf(item), 1);
+		updateLocalStorage();
+		renderHTML();
+	});
+
+	return itemSection;
+}
+
+function renderAsideListItem(item) {
+	const li = document.createElement("li");
+	const nameSpan = document.createElement("span");
+	nameSpan.classList.add("name");
+	nameSpan.innerText = item.name;
+	li.appendChild(nameSpan);
+
+	const amountSpan = document.createElement("span");
+	amountSpan.classList.add("amount");
+	amountSpan.innerText = item.amount;
+	li.appendChild(amountSpan);
+
+	
+	return li;
+}
+
 function itemIndexByName(name) {
 	let names = items.map((obj) => obj.name.toLowerCase());
-
 	return names.indexOf(name.toLowerCase().trim());
 }
 function addItemToObject(name) {
@@ -213,15 +227,16 @@ function addItemToObject(name) {
 }
 
 function addItemAndRerender(input) {
-	let inputValue = input.value;
+	let inputValue = input.value.trim();
 
-	if (inputValue.trim().length !== 0) addItemToObject(inputValue);
+	if (inputValue.length !== 0) addItemToObject(inputValue);
 	input.value = "";
 	input.focus();
 }
 
 
 window.onload = () => {
+	
 
 	//clearStorage();
 	if (localStorage.getItem("buyListApp") == null) {
