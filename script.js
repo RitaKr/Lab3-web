@@ -46,6 +46,8 @@ function renderAside() {
 	});
 
 }
+
+
 function renderItemPanel(item) {
 	
 	const itemSection = document.createElement("section");
